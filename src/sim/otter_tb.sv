@@ -1,51 +1,33 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 09/24/2018 08:37:20 AM
-// Design Name: 
-// Module Name: simTemplate
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-module simTemplate(
-     );
-    
-     logic CLK=0,BTNL,BTNC,PS2Clk,PS2Data,VGA_HS,VGA_VS,Tx;
-     logic [15:0] SWITCHES,LEDS;
-     logic [7:0] CATHODES,VGA_RGB;
-     logic [3:0] ANODES;
-   
-    OTTER_Wrapper DUT (.*);
 
-    initial forever  #10  CLK =  ! CLK; 
-   
-    
+module otter_tb;
+
+    logic CLK;
+    logic BTNC;
+    logic [15:0] SWITCHES;
+    logic [15:0] LEDS;
+    logic [7:0] CATHODES;
+    logic [3:0] ANODES;
+
+    OTTER_Wrapper DUT (
+        .CLK(CLK),
+        .BTNC(BTNC),
+        .SWITCHES(SWITCHES),
+        .LEDS(LEDS),
+        .CATHODES(CATHODES),
+        .ANODES(ANODES)
+    );
+
     initial begin
-        BTNC=1;
-        #600 
-        BTNC=0;
-        SWITCHES=15'd0;
-
-      //$finish;
+        CLK = 1'b0;             //start clock
+        forever #5 CLK = ~CLK;  //100 MHz is divided to 50 MHz
     end
-    
-    
-       
-  /*  initial begin
-         if(ld_use_hazard)
-            $display("%t -------> Stall ",$time);
-        if(branch_taken)
-            $display("%t -------> branch taken",$time); 
-      end*/
+
+    initial begin
+        BTNC = 1'b1;         //hold reset
+        SWITCHES = 16'h0000; //set switches
+        #20;                 //wait 1 cycle
+        BTNC = 1'b0;         //release reset
+    end
+
 endmodule
