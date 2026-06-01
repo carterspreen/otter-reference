@@ -19,8 +19,8 @@ module otter_tb;
     );
 
     initial begin
-        CLK = 1'b0;             //start clock
-        forever #5 CLK = ~CLK;  //100 MHz is divided to 50 MHz
+        CLK = 1'b0;               //start clock
+        #5 forever #5 CLK = ~CLK; //100 MHz is divided to 50 MHz
     end
 
     initial begin
